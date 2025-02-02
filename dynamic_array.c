@@ -39,3 +39,8 @@ free(new_ptr);
         arr_struct->size++;
     }
 }
+int main()
+{
+Array *arr=create_array(10);
+    return 0;
+}
