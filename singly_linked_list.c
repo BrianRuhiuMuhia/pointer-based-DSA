@@ -42,7 +42,7 @@ return;
 }
 if(pos==0)
 {
-    list->head=list->head->next;
+    list_ptr->head=list_ptr->head->next;
 }
 Node *curr=malloc(sizeof(Node));
 if(curr==NULL)
@@ -63,20 +63,21 @@ free(curr);
 }
 void print(list *list_ptr)
 {
-Node *curr=malloc(Node);
+Node *curr=list_ptr->head;
 while(curr!=NULL)
 {
-    printf("valu:%d",curr->data);
+    printf(curr->data,"\n");
     curr=curr->next;
 }
+return;
 }
 void free_list(list * list_pointer)
 {
-Node *curr=malloc(Node);
+Node *curr=list_pointer->head;
 Node *temp;
 if(curr==NULL)
 {
-printf("memory error");
+printf("error assigning to head");
 exit(1);
 }
 while(curr!=NULL)
@@ -85,10 +86,15 @@ temp=curr->next;
 free(curr);
 curr=temp;
 }
+free(list_pointer->head);
 free(list_pointer);
 }
 void *create_list()
 {
-    list *new_list=malloc(list);
+    list *new_list=malloc(sizeof(list));
+    if(new_list==NULL){
+        printf("error assigning memory");
+        return;
+    }
 return new_list;
 }
