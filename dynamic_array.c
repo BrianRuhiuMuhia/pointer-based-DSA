@@ -1,46 +1,58 @@
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
-typedef struct Array{
-    int size;
-    int *array;
-    int capacity;
-}Array;
-void *create_array(int size)
-{
-    Array *arr_struct = malloc(sizeof(struct Array));
-    if(arr_struct==NULL)
-    {
-        printf("error assigning memory");
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+
+typedef struct Array {
+    size_t size;
+    size_t capacity;
+    int *arr;
+} Array;
+
+
+Array *create_array(int array_size) {
+    if (array_size <= 0) {
+        printf("Error: array size must be positive\n");
+        exit(1);
     }
-    arr_struct->size=0;
-    arr_struct->capacity=size;
-    arr_struct->array=malloc(sizeof(int)*arr_struct->capacity);
-    return arr_struct;
-}
-void insert(int data,Array *arr_struct)
-{
-    if(arr_struct->size+1==arr_struct->capacity)
-    {
-int *new_ptr=malloc(sizeof(int)*arr_struct->capacity);
-if(new_ptr==NULL)
-{
-    printf("error assigning memory");
-    exit(1);
-}
-memcpy(new_ptr,arr_struct->array,(sizeof(int)*arr_struct->size));
-arr_struct->capacity=arr_struct->capacity*2;
-arr_struct->array=malloc((sizeof(int)*arr_struct->capacity));
-arr_struct->array=new_ptr;
-free(new_ptr);
+    Array *new_array = malloc(sizeof(Array));
+    if (new_array == NULL) {
+        printf("Memory allocation failed\n");
+        exit(1);
     }
-    else{
-        arr_struct->array[arr_struct->size]=data;
-        arr_struct->size++;
+    new_array->arr = malloc(sizeof(int) * array_size);
+    if (new_array->arr == NULL) {
+        printf("Error allocating memory for array\n");
+        free(new_array); 
+        exit(1);
     }
+    new_array->size = 0;
+    new_array->capacity = array_size;
+    return new_array;
 }
-int main()
-{
-Array *arr=create_array(10);
-    return 0;
+
+void insert(Array *arr, int data) {
+    if (arr->size >= arr->capacity) {
+        arr->capacity *= 2; 
+        arr->arr = realloc(arr->arr, sizeof(int) * arr->capacity);
+        if (arr->arr == NULL) {
+            printf("Error reallocating memory\n");
+            exit(1);
+        }
+    }
+    arr->arr[arr->size] = data;
+    arr->size++;
+}
+void free_array(Array *arr) {
+    free(arr->arr);
+    free(arr);
+}
+int pop(Array *arr) {
+    if (arr->size == 0) {
+        printf("Error: array is empty\n");
+        return -1;
+    }
+    int popped_value = arr->arr[arr->size - 1]; 
+    arr->size--;
+    return popped_value; 
 }

@@ -1,58 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-
+#define MAX_SIZE 200 
 typedef struct Array {
-    size_t size;
-    size_t capacity;
-    int *arr;
+    int arr[MAX_SIZE]; 
+    size_t size;       
 } Array;
-
-
-Array *create_array(int array_size) {
-    if (array_size <= 0) {
-        printf("Error: array size must be positive\n");
-        exit(1);
-    }
-    Array *new_array = malloc(sizeof(Array));
-    if (new_array == NULL) {
-        printf("Memory allocation failed\n");
-        exit(1);
-    }
-    new_array->arr = malloc(sizeof(int) * array_size);
-    if (new_array->arr == NULL) {
-        printf("Error allocating memory for array\n");
-        free(new_array); 
-        exit(1);
-    }
-    new_array->size = 0;
-    new_array->capacity = array_size;
-    return new_array;
+Array create_static_array() {
+    Array array;
+    array.size = 0; 
+    return array;
 }
-
-void insert_element(Array *arr, int data) {
-    if (arr->size >= arr->capacity) {
-        arr->capacity *= 2; 
-        arr->arr = realloc(arr->arr, sizeof(int) * arr->capacity);
-        if (arr->arr == NULL) {
-            printf("Error reallocating memory\n");
-            exit(1);
-        }
+void insert_element(Array *array, int data) {
+    if (array->size >= MAX_SIZE) {
+        printf("Error: Array is full. Cannot insert %d\n", data);
+        return;
     }
-    arr->arr[arr->size] = data;
-    arr->size++;
+    array->arr[array->size] = data; 
+    array->size++; 
 }
-void free_array(Array *arr) {
-    free(arr->arr);
-    free(arr);
-}
-int pop(Array *arr) {
-    if (arr->size == 0) {
-        printf("Error: array is empty\n");
-        return -1;
+int pop(Array *array) {
+    if (array->size == 0) {
+        printf("Error: Array is empty. Cannot pop.\n");
+        return -1; 
     }
-    int popped_value = arr->arr[arr->size - 1]; 
-    arr->size--;
-    return popped_value; 
+    int popped_value = array->arr[array->size - 1]; 
+    array->size--; 
+    return popped_value;
+}
+void print_array(const Array *array) {
+    printf("Array elements: ");
+    for (size_t i = 0; i < array->size; i++) {
+        printf("%d ", array->arr[i]);
+    }
+    printf("\n");
 }
