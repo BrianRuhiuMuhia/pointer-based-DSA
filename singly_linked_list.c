@@ -8,10 +8,10 @@ int data;
 typedef struct list{
     Node *head;
     int size;
-}list
+}list;
 void insert(int data,list *list_ptr)
 {
-Node *new_node=malloc(Node);
+Node *new_node=malloc(sizeof(Node));
 if(new_node==NULL || list_ptr==NULL)
 {
     printf("memory error");

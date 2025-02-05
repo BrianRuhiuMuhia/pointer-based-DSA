@@ -4,7 +4,7 @@
 typedef struct Node{
 int data;
 struct Node* next;
-}Node
+}Node;
 typedef struct Stack{
 int size;
 struct Node* top;
