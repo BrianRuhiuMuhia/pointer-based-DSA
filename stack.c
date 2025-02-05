@@ -9,7 +9,7 @@ typedef struct Stack{
 int size;
 struct Node* top;
 }Stack;
-void *create_stack()
+Stack *create_stack()
 {
 Stack *stack=malloc(sizeof(Stack));
 if(stack==NULL)
@@ -55,4 +55,10 @@ stack->size--;
 int size(Stack *stack)
 {
 return stack->size;
+}
+void delete_stack(Stack* stack) {
+    while (stack->top != NULL) {
+        pop(stack); // Pop all elements
+    }
+    free(stack); // Free the stack itself
 }
